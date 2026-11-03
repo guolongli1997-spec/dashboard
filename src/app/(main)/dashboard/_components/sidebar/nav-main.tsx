@@ -30,38 +30,38 @@ import type {
 } from "@/navigation/sidebar/sidebar-items";
 
 interface NavMainProps {
-  readonly items: readonly NavGroup[];
+  items: NavGroup[];
 }
 
 interface NavItemProps {
-  readonly item: NavMainItem;
-  readonly isItemActive: (item: NavMainItem) => boolean;
-  readonly isSubItemActive: (url: string) => boolean;
-  readonly isSubmenuOpen: (item: NavMainParentItem) => boolean;
+  item: NavMainItem;
+  isItemActive: (item: NavMainItem) => boolean;
+  isSubItemActive: (url: string) => boolean;
+  isSubmenuOpen: (item: NavMainParentItem) => boolean;
 }
 
 interface NavLinkItemProps {
-  readonly item: NavMainLinkItem;
-  readonly isActive: boolean;
-  readonly showIconFallback: boolean;
+  item: NavMainLinkItem;
+  isActive: boolean;
+  showIconFallback: boolean;
 }
 
 interface NavLinkIconProps {
-  readonly item: NavMainLinkItem;
-  readonly showFallback: boolean;
+  item: NavMainLinkItem;
+  showFallback: boolean;
 }
 
 interface NavDropdownItemProps {
-  readonly item: NavMainParentItem;
-  readonly isActive: boolean;
-  readonly isSubItemActive: (url: string) => boolean;
+  item: NavMainParentItem;
+  isActive: boolean;
+  isSubItemActive: (url: string) => boolean;
 }
 
 interface NavCollapsibleItemProps {
-  readonly item: NavMainParentItem;
-  readonly isActive: boolean;
-  readonly defaultOpen: boolean;
-  readonly isSubItemActive: (url: string) => boolean;
+  item: NavMainParentItem;
+  isActive: boolean;
+  defaultOpen: boolean;
+  isSubItemActive: (url: string) => boolean;
 }
 
 function CollapsedIconFallback({ title }: { title: string }) {
