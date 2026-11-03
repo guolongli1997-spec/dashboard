@@ -19,12 +19,12 @@ import { getInitials } from "@/lib/utils";
 export function AccountSwitcher({
   users,
 }: {
-  readonly users: ReadonlyArray<{
-    readonly id: string;
-    readonly name: string;
-    readonly email: string;
-    readonly avatar: string;
-    readonly role: string;
+  users: Array<{
+    id: string;
+    name: string;
+    email: string;
+    avatar: string;
+    role: string;
   }>;
 }) {
   const [activeUser, setActiveUser] = useState(users[0]);
