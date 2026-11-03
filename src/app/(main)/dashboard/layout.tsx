@@ -11,10 +11,7 @@ import { users } from "@/data/users";
 import { getPreference } from "@/server/server-actions";
 
 import { AccountSwitcher } from "./_components/header/account-switcher";
-import { GitHubRepositoriesMenu } from "./_components/header/github-repositories-menu";
-import { LayoutControls } from "./_components/header/layout-controls";
 import { SearchDialog } from "./_components/header/search-dialog";
-import { ThemeSwitcher } from "./_components/header/theme-switcher";
 import { ReactAriaRouterProvider } from "./_components/react-aria-router-provider";
 
 export default async function Layout({ children }: Readonly<{ children: ReactNode }>) {
@@ -49,11 +46,11 @@ export default async function Layout({ children }: Readonly<{ children: ReactNod
           <header
             className={cn(
               "flex h-12 shrink-0 items-center gap-2 border-b transition-[width,height] ease-linear group-has-data-[collapsible=icon]/sidebar-wrapper:h-12",
-              // Handle sticky navbar style with conditional classes so blur, background, z-index, and rounded corners remain consistent across all SidebarVariant layouts.
               "[html[data-navbar-style=sticky]_&]:bg-background/50 [html[data-navbar-style=sticky]_&]:sticky [html[data-navbar-style=sticky]_&]:top-0 [html[data-navbar-style=sticky]_&]:z-50 [html[data-navbar-style=sticky]_&]:overflow-hidden [html[data-navbar-style=sticky]_&]:rounded-t-[inherit] [html[data-navbar-style=sticky]_&]:backdrop-blur-md",
             )}
           >
             <div className="flex w-full items-center justify-between px-4 lg:px-6">
+              {/* বাম পাশে নেভিগেশন ট্রিগার এবং সার্চ */}
               <div className="flex items-center gap-1 lg:gap-2">
                 <SidebarTrigger className="-ml-1" />
                 <Separator
@@ -62,15 +59,14 @@ export default async function Layout({ children }: Readonly<{ children: ReactNod
                 />
                 <SearchDialog />
               </div>
+
+              {/* ডান পাশে শুধুমাত্র ইউজার অ্যাকাউন্ট সুইচার */}
               <div className="flex items-center gap-2">
-                <LayoutControls />
-                <ThemeSwitcher />
-                <GitHubRepositoriesMenu />
                 <AccountSwitcher users={users} />
               </div>
             </div>
           </header>
-          {/* Pages can set data-content-padding="false" to render full-bleed app layouts. */}
+          
           <div className="min-h-0 min-w-0 flex-1 overflow-x-hidden p-4 has-data-[content-padding=false]:p-0 md:p-6 md:has-data-[content-padding=false]:p-0">
             {children}
           </div>
