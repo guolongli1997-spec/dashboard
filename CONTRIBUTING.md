@@ -1,6 +1,6 @@
-# Contributing to Studio Admin
+# Contributing to Dashboard
 
-Thanks for showing interest in improving **Studio Admin** (repo: `next-shadcn-admin-dashboard-baseui`).  
+Thanks for showing interest in improving **Dashboard** (repo: `next-shadcn-admin-dashboard-baseui`).  
 This guide will help you set up your environment and understand how to contribute.
 
 ---
