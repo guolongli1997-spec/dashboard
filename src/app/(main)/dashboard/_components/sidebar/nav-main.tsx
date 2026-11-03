@@ -303,3 +303,4 @@ function NavItemBadge({ badge }: { badge?: NavBadge }) {
     </SidebarMenuBadge>
   );
 }
+
