@@ -1,10 +1,10 @@
 export const users = [
   {
     id: "1",
-    name: "Arham Khan",
-    username: "Aarhamkhnz",
-    email: "hello@arhamkhnz.com",
-    avatar: "https://avatars.githubusercontent.com/u/43849669",
+    name: "FlyTripVisa",
+    username: "Admin",
+    email: "info@flytripvisa.site",
+    avatar: "https://r2-cloud.jingpay.workers.dev/bucket/files/Rmx5IFZpZXcgVmlzYS8=/Rmx5VHJpcFZpc2EtSGVhZGVyLUxvZ28ucG5n",
     role: "administrator",
   },
   {
