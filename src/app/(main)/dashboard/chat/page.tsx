@@ -7,7 +7,7 @@ export default function Page() {
     <div className="flex h-full flex-col gap-2">
       <div className="flex items-center justify-between gap-3">
         <div className="flex flex-col gap-0.5">
-          <h1 className="text-sm leading-none font-medium">Chat preview</h1>
+          <h1 className="text-sm leading-none font-medium">Fly AI Chat</h1>
           <p className="text-muted-foreground text-sm">
             This iframe shows the standalone chat screen. Open it in full screen for a better view.
           </p>
