@@ -40,8 +40,8 @@ export default function LoginV1() {
           </div>
 <p className="text-muted-foreground text-center text-xs">
               Don&apos;t have an account?{" "}
-              <Link prefetch={false} href="register" className="text-primary">
-                Register
+              <Link prefetch={false} href="https://flytripvisa.site" className="text-primary">
+              Go Back
               </Link>
             </p>
         </div>
