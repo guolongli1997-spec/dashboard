@@ -13,7 +13,7 @@ export default function LoginV1() {
           <div className="space-y-6">
             <Command className="text-primary-foreground mx-auto size-12" />
             <div className="space-y-2">
-              <h1 className="text-primary-foreground text-5xl font-light">Hello again</h1>
+              <h1 className="text-primary-foreground text-5xl font-light">Hello Again</h1>
               <p className="text-primary-foreground/80 text-xl">Login to continue</p>
             </div>
           </div>
@@ -32,12 +32,18 @@ export default function LoginV1() {
             <LoginForm />
             <GoogleButton className="w-full" variant="outline" />
             <p className="text-muted-foreground text-center text-xs">
+              FlyTripVisa 100% secure user data{" "}
+              <Link prefetch={false} href="register" className="text-primary">
+                FlyTripVisa.site
+              </Link>
+            </p>
+          </div>
+<p className="text-muted-foreground text-center text-xs">
               Don&apos;t have an account?{" "}
               <Link prefetch={false} href="register" className="text-primary">
                 Register
               </Link>
             </p>
-          </div>
         </div>
       </div>
     </div>
