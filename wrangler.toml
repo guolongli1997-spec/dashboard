@@ -1,0 +1,59 @@
+name = "fly-dragon-ai"
+main = "src/index.js"
+compatibility_date = "2026-11-01"
+compatibility_flags = ["nodejs_compat"]
+
+# The existing marketing/chat page. Do not regenerate it: this worker only serves it.
+[assets]
+directory = "./public"
+binding = "ASSETS"
+run_worker_first = true          # /api/* and /oauth* must reach the worker, everything else is a file
+
+# ------------------------------------------------------------------ D1
+[[d1_databases]]
+binding = "DB"
+database_name = "fly-dragon-db"
+database_id = "REPLACE_WITH_ID_FROM_npx_wrangler_d1_create_fly-dragon-db"
+migrations_dir = "src/db"
+
+# ------------------------------------------------------------------ R2  (§5 bucket)
+[[r2_buckets]]
+binding = "UPLOADS"
+bucket_name = "fly-dragon-uploads"
+
+# ------------------------------------------------------------------ Workers AI
+[ai]
+binding = "AI"
+
+# ------------------------------------------------------------------ vars (no secrets here)
+[vars]
+PUBLIC_ORIGIN = "https://flytripvisa.site"
+R2_BUCKET_NAME = "fly-dragon-uploads"
+STORAGE_LIMIT_BYTES = "1073741824"      # 1 GB shown in the R2 Storage panel
+CHAT_RATE_LIMIT = "20"                  # requests / minute / visitor
+IMAGE_RATE_LIMIT = "8"                  # generations / 5 minutes / visitor
+TOOL_TIMEOUT_MS = "12000"
+STREAM_TIMEOUT_MS = "120000"
+HISTORY_LIMIT = "200"
+ADDITIONAL_ORIGINS = "http://localhost:8788,http://127.0.0.1:8788"
+# OPENAI_MODEL = "gpt-4o-mini"          # set only when you prefer OpenAI over Workers AI
+# AI_MODEL = "@cf/meta/llama-3.3-70b-instruct-fp8-fast"
+# AI_IMAGE_MODEL = "@cf/black-forest-labs/flux-1-schnell"
+
+# ------------------------------------------------------------------ secrets (never commit)
+# npx wrangler secret put JWT_SECRET
+# npx wrangler secret put MCP_ENCRYPTION_KEY
+# npx wrangler secret put GOOGLE_CLIENT_ID
+# npx wrangler secret put GOOGLE_CLIENT_SECRET
+# npx wrangler secret put OPENAI_API_KEY          # optional: overrides Workers AI
+# npx wrangler secret put RESEND_API_KEY          # optional: forgot-password email
+# npx wrangler secret put IATA_API_KEY            # optional: live visa rules
+# npx wrangler secret put AMADEUS_CLIENT_ID
+# npx wrangler secret put AMADEUS_CLIENT_SECRET
+# npx wrangler secret put PARALLEL_API_KEY        # optional: web search
+
+[observability]
+enabled = true
+
+[dev]
+port = 8788
