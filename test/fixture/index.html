@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+	<title>Fly Dragon AI (test fixture)</title>
+	<!--
+	  TEST FIXTURE ONLY - not a deliverable.
+	  Rebuilds the UI contract described in the brief (immutable section: logo "Fly 👽 AI",
+	  "by flytripvisa.site", welcome + dragon icon, 4 quick prompt cards, bubbles
+	  #1d4ed8 / #0f0f0f, composer with file attach + voice + send, composer note,
+	  max-width 640px mobile) so chat.js can be exercised before the real index.html
+	  is supplied. Colours/typography mirror the live flytripvisa.site dark theme.
+	-->
+	<style>
+		:root { --bg:#000; --card:#0f0f0f; --line:#262626; --txt:#f0f0f0; --dim:#8a9ab8; --brand:#e11d2c; --user:#1d4ed8; --r:16px; }
+		* { margin:0; padding:0; box-sizing:border-box; }
+		body { font-family:-apple-system,BlinkMacSystemFont,'Inter',sans-serif; background:var(--bg); color:var(--txt); min-height:100vh; display:flex; flex-direction:column; }
+		header { display:flex; align-items:center; justify-content:space-between; padding:12px 16px; border-bottom:1px solid var(--line); position:sticky; top:0; background:rgba(0,0,0,.85); backdrop-filter:blur(12px); z-index:10; }
+		.header-left { display:flex; align-items:center; gap:10px; }
+		.logo { font-size:20px; font-weight:900; }
+		.logo .mark { font-size:22px; }
+		.by { font-size:11px; color:var(--dim); }
+		#newChatButton { background:var(--card); border:1px solid var(--line); color:var(--txt); border-radius:12px; padding:9px 14px; font-size:13px; font-weight:700; cursor:pointer; }
+		#messages { display:flex; flex-direction:column; gap:12px; width:100%; }
+		#chatArea { flex:1; overflow-y:auto; padding:20px 16px 8px; display:flex; flex-direction:column; gap:12px; max-width:820px; width:100%; margin:0 auto; }
+		#welcome { text-align:center; margin:auto; }
+		#welcome .dragon { font-size:52px; }
+		#welcome h2 { font-size:24px; font-weight:900; margin-top:8px; }
+		#welcome p { color:var(--dim); font-size:14px; margin-top:6px; }
+		#quickPrompts { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:10px; max-width:620px; margin:22px auto 0; }
+		.prompt-card { background:var(--card); border:1px solid var(--line); border-radius:var(--r); padding:14px; text-align:left; cursor:pointer; color:var(--txt); font:inherit; }
+		.prompt-card b { display:block; font-size:14px; }
+		.prompt-card span { color:var(--dim); font-size:12px; }
+		.message { padding:12px 14px; border-radius:var(--r); max-width:80%; line-height:1.5; word-wrap:break-word; }
+		.user-message { background:var(--user); color:#fff; align-self:flex-end; }
+		.assistant-message { background:var(--card); border:1px solid var(--line); align-self:flex-start; }
+		.message a { color:#8ab4ff; }
+		.chat-form { position:relative; border-top:1px solid var(--line); padding:12px 16px calc(16px + env(safe-area-inset-bottom)); display:flex; gap:10px; align-items:flex-end; max-width:820px; width:100%; margin:0 auto; }
+		.icon-btn { background:var(--card); border:1px solid var(--line); color:var(--txt); width:40px; height:40px; border-radius:12px; cursor:pointer; font-size:16px; flex:0 0 auto; }
+		#messageInput { flex:1; background:var(--card); border:1px solid var(--line); color:var(--txt); border-radius:var(--r); padding:11px 14px; font-size:15px; font-family:inherit; resize:none; max-height:200px; }
+		#sendButton { background:var(--brand); border:1px solid var(--brand); color:#fff; width:40px; height:40px; border-radius:12px; cursor:pointer; font-size:16px; flex:0 0 auto; }
+		#sendButton:disabled { opacity:.45; cursor:not-allowed; }
+		.composer-note { text-align:center; color:#5f6b7f; font-size:11px; padding:0 16px 12px; }
+		@media (max-width:640px){ #quickPrompts{grid-template-columns:1fr} .message{max-width:92%} }
+	</style>
+	</head>
+	<body>
+		<header>
+			<div class="header-left">
+				<div class="logo"><span class="mark">👽</span> Fly AI</div>
+				<div class="by">by flytripvisa.site</div>
+				<button id="newChatButton" type="button">+ New Chat</button>
+			</div>
+
+		<div id="chatArea">
+			<section id="welcome">
+				<div class="dragon" aria-hidden="true">🐉</div>
+				<h2>Welcome to Fly Dragon AI</h2>
+				<p>Ask about visas, flights, hotels, eSIM and business setup.</p>
+				<div id="quickPrompts">
+					<button class="prompt-card" type="button" data-prompt="Where can I travel with a bangladeshi passport?"><b>Where can I travel?</b><span>Visa-free &amp; visa-on-arrival</span></button>
+					<button class="prompt-card" type="button" data-prompt="Check Japan Visa requirements"><b>Check Japan Visa</b><span>Documents &amp; processing time</span></button>
+					<button class="prompt-card" type="button" data-prompt="Find a flight from Dhaka to Dubai"><b>Find Flight</b><span>Routes and fares</span></button>
+					<button class="prompt-card" type="button" data-prompt="Hotel booking in Kuala Lumpur"><b>Hotel Booking</b><span>Stays for your dates</span></button>
+				</div>
+			</section>
+			<div id="messages"></div>
+		</div>
+
+		<form class="chat-form" id="chatForm">
+			<input type="file" id="fileInput" multiple accept=".pdf,.doc,.docx,.txt,.jpg,.jpeg,.png,.gif,.webp,.csv,.xlsx" hidden>
+			<button class="icon-btn" id="fileButton" type="button" aria-label="Attach file">📎</button>
+			<textarea id="messageInput" rows="1" placeholder="Ask Fly Dragon AI anything..." aria-label="Message"></textarea>
+			<button class="icon-btn" id="voiceButton" type="button" aria-label="Voice input">🎤</button>
+			<button id="sendButton" type="submit" aria-label="Send message" disabled>➤</button>
+		</form>
+		<p class="composer-note">Fly Dragon AI can make mistakes. Verify important travel information.</p>
+
+		<script src="/chat.js"></script>
+	</body>
+</html>
