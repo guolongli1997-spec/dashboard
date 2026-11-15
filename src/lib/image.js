@@ -21,9 +21,10 @@ export function cleanPrompt(raw) {
   return text;
 }
 
-export async function generateImage({ env, prompt, size = '1024x1024', signal }) {
+export async function generateImage({ env, userId, prompt, size = '1024x1024', signal }) {
   const ask = cleanPrompt(prompt);
   if (!ask) throw imageError(400, 'Write a prompt first.');
+  if (!userId) throw imageError(500, 'generateImage needs the owning userId to namespace the R2 key.');
   const chosen = SIZES.includes(size) ? size : '1024x1024';
 
   const result = env.OPENAI_API_KEY
@@ -34,7 +35,7 @@ export async function generateImage({ env, prompt, size = '1024x1024', signal })
   if (!bytes || !bytes.byteLength) throw imageError(502, 'The image model returned nothing.');
 
   const id = uid('img');
-  const key = r2Key(result.userId, id, 'generated.png');
+  const key = r2Key(userId, id, 'generated.png');
   const bucket = env.UPLOADS || env.R2;
   if (!bucket) throw imageError(500, 'The fly-dragon-uploads bucket is not bound to this worker.');
 

@@ -1,7 +1,17 @@
-/* Custom MCP servers (§6B) - storage + crypto so routes stay thin. */
+/* Custom MCP servers (§6B) - storage, crypto and tool discovery. */
 import { encryptSecret, decryptSecret, randomToken, stringEqual } from './crypto.js';
 import { uid } from './http.js';
 import { deleteMcp, findMcp, insertMcp, listMcp, updateMcpStatus, db_all } from './db.js';
+import { discoverMcp } from './tools.js';
+
+/** Per-request memo so a chat turn handshakes with each MCP server at most once. */
+const cache = {
+  getWaitUntil(c, key, loader) {
+    if (!c.__mcpCache) c.__mcpCache = new Map();
+    if (!c.__mcpCache.has(key)) c.__mcpCache.set(key, loader());
+    return c.__mcpCache.get(key);
+  },
+};
 
 const KEY_ENV = 'MCP_ENCRYPTION_KEY';
 
@@ -63,20 +73,35 @@ export async function rememberStatus(c, id, status, error) {
   return updateMcpStatus(c.env.DB, id, c.get('user').id, status, error, Math.floor(Date.now() / 1000));
 }
 
-/** Servers whose test previously succeeded are offered to the model. */
+/**
+ * Servers the visitor connected and last tested successfully, with their discovered
+ * tools attached so buildToolset() can expose them to the model. Discovery is cached
+ * per request; a server that stopped answering yields no tools instead of breaking
+ * the chat turn.
+ */
 export async function enabledMcpServers(c, userId) {
   const rows = await db_all(
     c.env.DB,
     "SELECT id, name, url, api_key_enc FROM mcp_servers WHERE user_id = ?1 AND status = 'connected' ORDER BY created_at DESC LIMIT 6",
     userId,
   );
-  return Promise.all(rows.map(async (row) => ({
-    id: row.id,
-    name: row.name,
-    url: row.url,
-    apiKey: await openApiKey(c.env, row.api_key_enc),
-    tools: [],
-  })));
+  return Promise.all(rows.map(async (row) => {
+    const server = {
+      id: row.id,
+      name: row.name,
+      url: row.url,
+      apiKey: await openApiKey(c.env, row.api_key_enc),
+      tools: [],
+    };
+    try {
+      const answer = await cache.getWaitUntil(c, `mcp:${row.id}`, () => discoverMcp(server));
+      server.tools = answer?.ok ? (answer.tools || []) : [];
+      server.sessionId = answer?.session || null;
+    } catch (err) {
+      console.warn(`[mcp] ${row.name} tool discovery failed:`, err && err.message);
+    }
+    return server;
+  }));
 }
 
 export { randomToken, stringEqual };
