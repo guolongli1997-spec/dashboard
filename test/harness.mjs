@@ -152,24 +152,14 @@ class R2 {
     this.store.delete(String(key));
   }
 
-  async list({ prefix = '', limit = 2000 } = {}) {
+  async list({ prefix = '', limit = 1000 } = {}) {
     const objects = [];
-    await this._walk(this.store, prefix, objects, limit);
     for (const [key, entry] of this.store) {
       if (!key.startsWith(prefix)) continue;
       if (objects.length >= limit) break;
       objects.push({ key, size: entry.bytes.byteLength });
     }
     return { objects, truncated: [], delimitedPrefixes: [] };
-  }
-
-  async _walk(map, prefix, out, limit) {
-    for (const [key, entry] of map) {
-      if (out.length >= limit) break;
-      if (!key.startsWith(prefix)) continue;
-      if (out.some((item) => item.key === key)) continue;
-      out.push({ key, size: entry.bytes.byteLength });
-    }
   }
 }
 
