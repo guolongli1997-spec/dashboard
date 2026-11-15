@@ -73,6 +73,7 @@ export async function rememberStatus(c, id, status, error) {
   return updateMcpStatus(c.env.DB, id, c.get('user').id, status, error, Math.floor(Date.now() / 1000));
 }
 
+/** Servers whose test previously succeeded are offered to the model. */
 /**
  * Servers the visitor connected and last tested successfully, with their discovered
  * tools attached so buildToolset() can expose them to the model. Discovery is cached

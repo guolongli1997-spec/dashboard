@@ -1,10 +1,19 @@
+# dependencies
 node_modules/
+package-lock.json
+
+# wrangler local state + secrets (never commit)
 .wrangler/
 .dev.vars
 .env
 .env.*
 !.env.example
+
+# build + test output
 dist/
-.DS_Store
-*.log
 test/artifacts/*.log
+test/artifacts/*.tap
+
+# editors / OS
+.DS_Store
+*.swp
